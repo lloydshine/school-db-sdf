@@ -1,3 +1,4 @@
+package app;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -77,5 +78,33 @@ public class DB {
     	} catch (SQLException e) {
             e.printStackTrace();
         }
+	}
+	
+	public static void removeStudent(Student student) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("DELETE FROM students WHERE id = ?;");
+       		ps.setInt(1, student.getId());
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static ArrayList<Student> searchStudent(String search) {
+		ArrayList<Student> list = new ArrayList<>();
+    	try {
+        	c = connect();
+        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE fullname LIKE ?;");
+        	ps.setString(1, search);
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        	    list.add(new Student(rs.getInt("id"),rs.getString("fullname"),
+        	        rs.getString("course"),rs.getInt("yearlevel")));
+        	}
+    	} catch (SQLException e) {
+        }
+    	System.out.println(list.size());
+    	return list;
 	}
 }

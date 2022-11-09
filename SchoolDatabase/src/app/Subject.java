@@ -1,3 +1,4 @@
+package app;
 
 public class Subject {
 	String subject_name;

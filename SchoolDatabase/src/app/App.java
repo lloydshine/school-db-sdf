@@ -1,3 +1,4 @@
+package app;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -14,6 +15,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.event.CaretListener;
+import javax.swing.event.CaretEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class App extends JFrame {
 
@@ -24,7 +29,8 @@ public class App extends JFrame {
 	private Student clicked = null;
 	
 	private ArrayList<Student> studentlist;
-	private JLabel image;
+	private ArrayList<Student> searched;
+	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;
 
@@ -76,17 +82,36 @@ public class App extends JFrame {
 		contentPane.add(l2);
 		
 		JButton viewbtn = new JButton("VIEW");
-		viewbtn.setBounds(34, 343, 127, 45);
+		viewbtn.setBounds(36, 376, 127, 45);
 		contentPane.add(viewbtn);
 		
-		layoutStudents();
+		name = new JLabel("");
+		name.setHorizontalAlignment(SwingConstants.CENTER);
+		name.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		name.setBounds(10, 306, 188, 26);
+		contentPane.add(name);
+		
+		JButton searchbtn = new JButton("SEARCH");
+		searchbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				searched = DB.searchStudent("%"+textField.getText()+"%");
+				layoutStudents(searched);
+			}
+		});
+		searchbtn.setBounds(619, 31, 102, 37);
+		contentPane.add(searchbtn);
+		studentlist = DB.getStudents();
+		layoutStudents(studentlist);
 		
 	}
 	
-	void layoutStudents() {
-		studentlist = DB.getStudents();
+	void layoutStudents(ArrayList<Student> s) {
+		if(s.size() == 0) {
+			return;
+		}
+		studentpanel.removeAll();
 		int row = 0, column = 0;
-	    for (Student student : studentlist) {
+	    for (Student student : s) {
 	    	if(column == 2) {
 	    		column = 0; row++;
 	    	}
@@ -96,12 +121,16 @@ public class App extends JFrame {
 	    	   @Override
 	    	   public void mouseClicked(MouseEvent e) {
 	    		   clicked = student;
+	    		   image.setText("");
 	    		   image.setIcon(clicked.getImage());
+	    		   name.setText(student.getFullName());
 	    	   }
 	       });
 	       gbc.gridx = column++;
 	       gbc.gridy = row;
 	       studentpanel.add(itempane,gbc);
 	    }
+	    studentpanel.revalidate();
+	    studentpanel.repaint();
 	  }
 }
