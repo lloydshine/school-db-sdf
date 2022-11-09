@@ -27,9 +27,8 @@ public class App extends JFrame {
 	private JPanel contentPane;
 	private StudentPanel studentpanel;
 	private Student clicked = null;
-	
+	private JButton viewbtn;
 	private ArrayList<Student> studentlist;
-	private ArrayList<Student> searched;
 	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;
@@ -81,7 +80,8 @@ public class App extends JFrame {
 		l2.setBounds(231, 34, 113, 26);
 		contentPane.add(l2);
 		
-		JButton viewbtn = new JButton("VIEW");
+		viewbtn = new JButton("VIEW");
+		viewbtn.setEnabled(false);
 		viewbtn.setBounds(36, 376, 127, 45);
 		contentPane.add(viewbtn);
 		
@@ -94,13 +94,28 @@ public class App extends JFrame {
 		JButton searchbtn = new JButton("SEARCH");
 		searchbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				searched = DB.searchStudent("%"+textField.getText()+"%");
-				layoutStudents(searched);
+				studentlist = DB.searchStudent("%"+textField.getText()+"%");
+				layoutStudents(studentlist);
 			}
 		});
 		searchbtn.setBounds(619, 31, 102, 37);
 		contentPane.add(searchbtn);
-		studentlist = DB.getStudents();
+		
+		JLabel lblNewLabel = new JLabel("CCS DATABASE");
+		lblNewLabel.setBackground(Color.WHITE);
+		lblNewLabel.setForeground(Color.GREEN);
+		lblNewLabel.setFont(new Font("Trajan Pro", Font.PLAIN, 18));
+		lblNewLabel.setBounds(23, 25, 160, 50);
+		contentPane.add(lblNewLabel);
+		
+		JButton addstudentbtn = new JButton("Add Student");
+		addstudentbtn.setBounds(36, 468, 127, 45);
+		contentPane.add(addstudentbtn);
+		
+		JButton addsubjectbtn = new JButton("Add Subject");
+		addsubjectbtn.setBounds(36, 524, 127, 45);
+		contentPane.add(addsubjectbtn);
+		studentlist = DB.searchStudent("%"+textField.getText()+"%");
 		layoutStudents(studentlist);
 		
 	}
@@ -121,6 +136,7 @@ public class App extends JFrame {
 	    	   @Override
 	    	   public void mouseClicked(MouseEvent e) {
 	    		   clicked = student;
+	    		   viewbtn.setEnabled(true);
 	    		   image.setText("");
 	    		   image.setIcon(clicked.getImage());
 	    		   name.setText(student.getFullName());

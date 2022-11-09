@@ -46,9 +46,7 @@ public class DB {
 			}
 			stat.close();
 			c.close();
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
+		} catch (SQLException e) {}
 	}
 	
 	public static ArrayList<Student> getStudents() {
@@ -104,7 +102,7 @@ public class DB {
         	}
     	} catch (SQLException e) {
         }
-    	System.out.println(list.size());
+    	//System.out.println(list.size());
     	return list;
 	}
 }
