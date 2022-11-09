@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -16,11 +15,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
-import javax.swing.event.CaretListener;
-import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Insets;
 
 public class App extends JFrame {
 
@@ -41,8 +37,6 @@ public class App extends JFrame {
 				try {
 					App frame = new App();
 					frame.setVisible(true);
-					App frame2 = new App();
-					frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
