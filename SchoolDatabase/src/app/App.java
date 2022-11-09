@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -19,6 +20,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Insets;
 
 public class App extends JFrame {
 
@@ -39,6 +41,8 @@ public class App extends JFrame {
 				try {
 					App frame = new App();
 					frame.setVisible(true);
+					App frame2 = new App();
+					frame2.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,6 +58,7 @@ public class App extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		image = new JLabel("No Student Selected");
 		image.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,12 +106,12 @@ public class App extends JFrame {
 		searchbtn.setBounds(619, 31, 102, 37);
 		contentPane.add(searchbtn);
 		
-		JLabel lblNewLabel = new JLabel("CCS DATABASE");
-		lblNewLabel.setBackground(Color.WHITE);
-		lblNewLabel.setForeground(Color.GREEN);
-		lblNewLabel.setFont(new Font("Trajan Pro", Font.PLAIN, 18));
-		lblNewLabel.setBounds(23, 25, 160, 50);
-		contentPane.add(lblNewLabel);
+		JLabel cd = new JLabel("CCS DATABASE");
+		cd.setBackground(Color.WHITE);
+		cd.setForeground(Color.GREEN);
+		cd.setFont(new Font("Trajan Pro", Font.PLAIN, 18));
+		cd.setBounds(23, 25, 160, 50);
+		contentPane.add(cd);
 		
 		JButton addstudentbtn = new JButton("Add Student");
 		addstudentbtn.setBounds(36, 468, 127, 45);
@@ -121,10 +126,10 @@ public class App extends JFrame {
 	}
 	
 	void layoutStudents(ArrayList<Student> s) {
-		if(s.size() == 0) {
-			return;
-		}
 		studentpanel.removeAll();
+		if(s.size() == 0) {
+			JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
+		}
 		int row = 0, column = 0;
 	    for (Student student : s) {
 	    	if(column == 2) {
