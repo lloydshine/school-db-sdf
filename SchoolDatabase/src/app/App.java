@@ -80,6 +80,11 @@ public class App extends JFrame {
 		contentPane.add(l2);
 		
 		viewbtn = new JButton("VIEW");
+		viewbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		viewbtn.setEnabled(false);
 		viewbtn.setBounds(36, 376, 127, 45);
 		contentPane.add(viewbtn);
@@ -121,9 +126,6 @@ public class App extends JFrame {
 	
 	void layoutStudents(ArrayList<Student> s) {
 		studentpanel.removeAll();
-		if(s.size() == 0) {
-			JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
-		}
 		int row = 0, column = 0;
 	    for (Student student : s) {
 	    	if(column == 2) {
@@ -147,5 +149,8 @@ public class App extends JFrame {
 	    }
 	    studentpanel.revalidate();
 	    studentpanel.repaint();
+	    if(s.size() == 0) {
+			JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
+		}
 	  }
 }
