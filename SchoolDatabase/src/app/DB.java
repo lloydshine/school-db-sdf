@@ -141,6 +141,20 @@ public class DB {
         }
 	}
 	
+	public static void editStudent(Student student) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("UPDATE students SET fullname = ?,course = ?,yearlevel = ? WHERE id = ?");
+       		ps.setString(1, student.getFullName());
+       		ps.setString(2, student.getCourse());
+       		ps.setInt(3, student.getYearLevel());
+       		ps.setInt(4, student.getId());
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	public static ArrayList<Student> searchStudent(String search) {
 		ArrayList<Student> list = new ArrayList<>();
     	try {
