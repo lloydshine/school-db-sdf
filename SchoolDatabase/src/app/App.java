@@ -116,9 +116,16 @@ public class App extends JFrame {
 		addstudentbtn.setBounds(36, 468, 127, 45);
 		contentPane.add(addstudentbtn);
 		
-		JButton addsubjectbtn = new JButton("Add Subject");
-		addsubjectbtn.setBounds(36, 524, 127, 45);
-		contentPane.add(addsubjectbtn);
+		JButton viewsubjectbtn = new JButton("View Subjects");
+		viewsubjectbtn.setBounds(36, 524, 127, 45);
+		viewsubjectbtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SubjectsTable st = new SubjectsTable();
+				st.setVisible(true);
+			}
+		});
+		contentPane.add(viewsubjectbtn);
+		
 		studentlist = DB.searchStudent("%"+textField.getText()+"%");
 		layoutStudents(studentlist);
 		

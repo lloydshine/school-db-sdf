@@ -14,6 +14,7 @@ public class StudentPane extends JPanel {
 	private static final long serialVersionUID = -5422043241751244122L;
 
 	public StudentPane(Student student) {
+		this.setBackground(Color.LIGHT_GRAY);
 		Border blackline = BorderFactory.createLineBorder(Color.black);
 		setBorder(blackline);
 		setPreferredSize(new Dimension(230, 289));

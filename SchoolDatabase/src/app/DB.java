@@ -37,7 +37,7 @@ public class DB {
 			c = connect();
 			String[] tables = {
 				"CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,fullname varchar(30),course varchar(20), yearlevel INTEGER);",
-				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20), instructor varchar(20));",
+				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20), offernum varchar(20));",
 				"CREATE TABLE student_subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,student_id integer,subject_id integer);"
 			};
 			Statement stat = c.createStatement();
@@ -65,13 +65,41 @@ public class DB {
     	return list;
 	}
 	
-	public static void insertStudent(Student student) {
+	public static ArrayList<Subject> getSubjects() {
+		ArrayList<Subject> list = new ArrayList<>();
+    	try {
+        	c = connect();
+        	PreparedStatement ps = c.prepareStatement("SELECT * from subjects");
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        	    list.add(new Subject(rs.getInt("id"),rs.getString("subname"),
+        	        rs.getString("offernum")));
+        	}
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return list;
+	}
+	
+	public static void insertStudent(String fname,String course,int yearlevel) {
 		try {
        		c = connect();
        		PreparedStatement ps = c.prepareStatement("INSERT INTO students (fullname,course,yearlevel) VALUES (?,?,?)");
-       		ps.setString(1, student.getFullName());
-       		ps.setString(2, student.getCourse());
-       		ps.setInt(3, student.getYearLevel());
+       		ps.setString(1, fname);
+       		ps.setString(2, course);
+       		ps.setInt(3, yearlevel);
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static void insertSubject(String subname,String offernum) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("INSERT INTO subjects (subname,offernum) VALUES (?,?)");
+       		ps.setString(1, subname);
+       		ps.setString(2, offernum);
        		ps.executeUpdate();
     	} catch (SQLException e) {
             e.printStackTrace();
@@ -83,6 +111,30 @@ public class DB {
        		c = connect();
        		PreparedStatement ps = c.prepareStatement("DELETE FROM students WHERE id = ?;");
        		ps.setInt(1, student.getId());
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static void removeSubject(Subject subject) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("DELETE FROM subjects WHERE id = ?;");
+       		ps.setInt(1, subject.getId());
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static void editSubject(Subject subject) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("UPDATE subjects SET subname = ?, offernum = ? WHERE id = ?");
+       		ps.setString(1, subject.getSubname());
+       		ps.setString(2, subject.getOffernum());
+       		ps.setInt(3, subject.getId());
        		ps.executeUpdate();
     	} catch (SQLException e) {
             e.printStackTrace();
