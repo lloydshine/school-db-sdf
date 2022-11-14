@@ -26,7 +26,7 @@ public class App extends JFrame {
 	private StudentPanel studentpanel;
 	private Student clicked = null;
 	private JButton viewbtn;
-	private ArrayList<Student> studentlist;
+	private static ArrayList<Student> studentlist;
 	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;
@@ -82,7 +82,12 @@ public class App extends JFrame {
 		viewbtn = new JButton("VIEW");
 		viewbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				ViewStudent vs = new ViewStudent(clicked);
+				vs.setVisible(true);
+				viewbtn.setEnabled(false);
+				image.setIcon(null);
+				image.setText("No Student Selected");
+				name.setText("");
 			}
 		});
 		viewbtn.setEnabled(false);
@@ -105,13 +110,6 @@ public class App extends JFrame {
 		searchbtn.setBounds(619, 31, 102, 37);
 		contentPane.add(searchbtn);
 		
-		JLabel cd = new JLabel("CCS DATABASE");
-		cd.setBackground(Color.WHITE);
-		cd.setForeground(Color.GREEN);
-		cd.setFont(new Font("Trajan Pro", Font.PLAIN, 18));
-		cd.setBounds(23, 25, 160, 50);
-		contentPane.add(cd);
-		
 		JButton addstudentbtn = new JButton("Add Student");
 		addstudentbtn.setBounds(36, 468, 127, 45);
 		contentPane.add(addstudentbtn);
@@ -125,6 +123,19 @@ public class App extends JFrame {
 			}
 		});
 		contentPane.add(viewsubjectbtn);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(0, 255, 0));
+		panel.setBounds(10, 25, 173, 43);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel cd = new JLabel("CCS DATABASE");
+		cd.setBounds(8, 11, 158, 26);
+		panel.add(cd);
+		cd.setBackground(Color.WHITE);
+		cd.setForeground(new Color(255, 255, 255));
+		cd.setFont(new Font("Tahoma", Font.BOLD, 21));
 		
 		studentlist = DB.searchStudent("%"+textField.getText()+"%");
 		layoutStudents(studentlist);

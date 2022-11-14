@@ -26,27 +26,35 @@ public class StudentPane extends JPanel {
 		add(image);
 		
 		JLabel l1 = new JLabel("Name:");
-		l1.setBounds(10, 181, 38, 14);
+		l1.setBounds(10, 199, 38, 14);
 		add(l1);
 		
 		JLabel namelabel = new JLabel(student.getFullName());
-		namelabel.setBounds(58, 181, 172, 14);
+		namelabel.setBounds(58, 199, 172, 14);
 		add(namelabel);
 		
 		JLabel l2 = new JLabel("Yrlvl:");
-		l2.setBounds(10, 206, 38, 14);
+		l2.setBounds(10, 224, 38, 14);
 		add(l2);
 		
 		JLabel agelabel = new JLabel(Integer.toString(student.getYearLevel()));
-		agelabel.setBounds(58, 206, 140, 14);
+		agelabel.setBounds(58, 224, 140, 14);
 		add(agelabel);
 		
 		JLabel l3 = new JLabel("Course:");
-		l3.setBounds(10, 231, 48, 14);
+		l3.setBounds(10, 249, 48, 14);
 		add(l3);
 		
 		JLabel courselabel = new JLabel(student.getCourse());
-		courselabel.setBounds(58, 231, 172, 14);
+		courselabel.setBounds(58, 249, 172, 14);
 		add(courselabel);
+		
+		JLabel lblId = new JLabel("ID:");
+		lblId.setBounds(10, 174, 27, 14);
+		add(lblId);
+		
+		JLabel namelabel_1 = new JLabel(Integer.toString(student.getId()));
+		namelabel_1.setBounds(58, 174, 73, 14);
+		add(namelabel_1);
 	}
 }

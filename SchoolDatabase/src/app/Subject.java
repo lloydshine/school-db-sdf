@@ -11,6 +11,11 @@ public class Subject {
         this.offernum = offernum;
     }
 
+	@Override
+	public String toString() {
+		return offernum+"-"+subname;
+	}
+
 	public int getId() {
 		return id;
 	}

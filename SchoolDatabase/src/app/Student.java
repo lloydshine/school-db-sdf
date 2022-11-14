@@ -22,7 +22,7 @@ public class Student {
 	public Student(int id,String fullname,String course,int yearlevel) {
 		this.image = new ImageIcon("./images/"+id+".jpg");
 		Image i = image.getImage(); // transform it 
-		Image newimg = i.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		Image newimg = i.getScaledInstance(150, 150,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		this.image = new ImageIcon(newimg);  // transform it back
 		
 		this.id = id;

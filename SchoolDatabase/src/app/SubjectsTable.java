@@ -35,6 +35,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 	public SubjectsTable() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(740, 100, 378, 550);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setTitle("Subjects Table");
 		contentPane = new JPanel();
@@ -43,7 +44,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 362, 252);
+		scrollPane.setBounds(0, 0, 362, 261);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -124,14 +125,14 @@ public class SubjectsTable extends JFrame implements ActionListener{
 			if(subname.length() == 0 || offernum.length() == 0) {
 				JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 			} else {
+				DB.insertSubject(subname,offernum);
+				subjects = DB.getSubjects();
+				Subject newsub = subjects.get(subjects.size()-1);
 				Object[] rowdata = new Object[3];
-				rowdata[0] = 0;
-				rowdata[1] = subnameTf.getText();
-				rowdata[2] = offernumTf.getText();
-				
-				subjects.add(new Subject((int) rowdata[0],rowdata[1].toString(),rowdata[2].toString()));
+				rowdata[0] = newsub.getId();
+				rowdata[1] = newsub.getSubname();
+				rowdata[2] = newsub.getOffernum();
 				model.addRow(rowdata);
-				DB.insertSubject(rowdata[1].toString(),rowdata[2].toString());
 				subnameTf.setText("");
 				offernumTf.setText("");
 			}
@@ -154,18 +155,13 @@ public class SubjectsTable extends JFrame implements ActionListener{
 			   if(subname.length() == 0 || offernum.length() == 0) {
 					JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 			   } else {
-				   try {
-					   sub = subjects.get(selected);
-					   sub.setSubject_name(subname);
-					   sub.setOffernum(offernum);
-					   addValues();
-					   subnameTf.setText("");
-					   offernumTf.setText("");
-					   DB.editSubject(sub);
-				   } catch(Exception error) {
-					  JOptionPane.showMessageDialog(this, "Enter Valid Values!", "Error", 2);
-					  return;
-				  }
+				   	sub = subjects.get(selected);
+					sub.setSubject_name(subname);
+					sub.setOffernum(offernum);
+					addValues();
+					subnameTf.setText("");
+					offernumTf.setText("");
+					DB.editSubject(sub);
 			   }
 		   }
 	   }
