@@ -3,21 +3,30 @@ package app;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class ViewStudent extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField fnameTf;
 	ArrayList<Subject> available_subs = DB.getSubjects();
+	private JTable table;
+	private DefaultTableModel model = new DefaultTableModel();
+	Object[] columns = {"ID","Subject Name","Offer No."};
+	Object[] rowdata = new Object[3];
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public ViewStudent(Student student) {
@@ -89,11 +98,39 @@ public class ViewStudent extends JFrame {
 			subjectsCb.addItem(s);
 		}
 		subjectsCb.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		subjectsCb.setBounds(23, 444, 168, 40);
+		subjectsCb.setBounds(32, 444, 168, 40);
 		contentPane.add(subjectsCb);
 		
 		JButton addbtn = new JButton("ADD");
-		addbtn.setBounds(201, 453, 89, 23);
+		addbtn.setBounds(210, 456, 89, 23);
 		contentPane.add(addbtn);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(33, 223, 362, 210);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setDefaultEditor(Object.class, null);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		table.setRowHeight(30);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int selected = table.getSelectedRow();
+			}
+		});
+		scrollPane.setViewportView(table);
+		model.setColumnIdentifiers(columns);
+		
+		Object[] rowdata = new Object[3];
+		rowdata[0] = "1";
+		rowdata[1] = "Calculus";
+		rowdata[2] = "832568";
+		model.addRow(rowdata);
+		table.setModel(model);
+		
+		JButton removebtn_1 = new JButton("REMOVE");
+		removebtn_1.setBounds(309, 456, 89, 23);
+		contentPane.add(removebtn_1);
 	}
 }
