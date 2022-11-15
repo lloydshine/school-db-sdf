@@ -18,15 +18,15 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class App extends JFrame {
+public class App extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel contentPane;
 	private StudentPanel studentpanel;
 	private Student clicked = null;
-	private JButton viewbtn;
-	private ArrayList<Student> studentlist;
+	private JButton viewbtn, searchbtn,addstudentbtn,viewsubjectbtn;
+	ArrayList<Student> studentlist;
 	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;
@@ -80,16 +80,7 @@ public class App extends JFrame {
 		contentPane.add(l2);
 		
 		viewbtn = new JButton("VIEW");
-		viewbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ViewStudent vs = new ViewStudent(clicked);
-				vs.setVisible(true);
-				viewbtn.setEnabled(false);
-				image.setIcon(null);
-				image.setText("No Student Selected");
-				name.setText("");
-			}
-		});
+		viewbtn.addActionListener(this);
 		viewbtn.setEnabled(false);
 		viewbtn.setBounds(36, 376, 127, 45);
 		contentPane.add(viewbtn);
@@ -100,21 +91,21 @@ public class App extends JFrame {
 		name.setBounds(10, 306, 188, 26);
 		contentPane.add(name);
 		
-		JButton searchbtn = new JButton("SEARCH");
+		searchbtn = new JButton("SEARCH");
 		searchbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				studentlist = DB.searchStudent("%"+textField.getText()+"%");
-				layoutStudents(studentlist);
+				layoutStudents();
 			}
 		});
 		searchbtn.setBounds(619, 31, 102, 37);
 		contentPane.add(searchbtn);
 		
-		JButton addstudentbtn = new JButton("Add Student");
+		addstudentbtn = new JButton("Add Student");
 		addstudentbtn.setBounds(36, 468, 127, 45);
+		addstudentbtn.addActionListener(this);
 		contentPane.add(addstudentbtn);
 		
-		JButton viewsubjectbtn = new JButton("View Subjects");
+		viewsubjectbtn = new JButton("View Subjects");
 		viewsubjectbtn.setBounds(36, 524, 127, 45);
 		viewsubjectbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -137,15 +128,15 @@ public class App extends JFrame {
 		cd.setForeground(new Color(255, 255, 255));
 		cd.setFont(new Font("Tahoma", Font.BOLD, 21));
 		
-		studentlist = DB.searchStudent("%"+textField.getText()+"%");
-		layoutStudents(studentlist);
+		layoutStudents();
 		
 	}
 	
-	void layoutStudents(ArrayList<Student> s) {
+	void layoutStudents() {
+		studentlist = DB.searchStudent("%"+textField.getText()+"%");
 		studentpanel.removeAll();
 		int row = 0, column = 0;
-	    for (Student student : s) {
+	    for (Student student : studentlist) {
 	    	if(column == 2) {
 	    		column = 0; row++;
 	    	}
@@ -167,8 +158,23 @@ public class App extends JFrame {
 	    }
 	    studentpanel.revalidate();
 	    studentpanel.repaint();
-	    if(s.size() == 0) {
+	    if(studentlist.size() == 0) {
 			JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
 		}
 	  }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == addstudentbtn) {
+			AddStudent as = new AddStudent(this);
+			as.setVisible(true);
+		} else if(e.getSource() == viewbtn) {
+			ViewStudent vs = new ViewStudent(clicked,this);
+			vs.setVisible(true);
+			viewbtn.setEnabled(false);
+			image.setIcon(null);
+			image.setText("No Student Selected");
+			name.setText("");
+		}
+	}
 }

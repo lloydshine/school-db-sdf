@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -29,6 +30,7 @@ public class ViewStudent extends JFrame implements ActionListener {
 	Object[] columns = {"ID","Subject Name","Offer No."};
 	Object[] rowdata = new Object[3];
 	private Student student;
+	private App a;
 	private JComboBox<Subject> subjectsCb;
 	
 	private JButton savebtn,addbtn,removebtn_student,removebtn_subject;
@@ -57,9 +59,10 @@ public class ViewStudent extends JFrame implements ActionListener {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ViewStudent(Student student) {
+	public ViewStudent(Student student, App a) {
 		available_subs = DB.getAvailableSubjects(student);
 		this.student = student;
+		this.a = a;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(469, 566);
 		setLocationRelativeTo(null);
@@ -158,8 +161,21 @@ public class ViewStudent extends JFrame implements ActionListener {
 			student.setYearLevel(Integer.parseInt((String) yearlevelCb.getSelectedItem()));
 			DB.editStudent(student);
 			JOptionPane.showMessageDialog(this, "Successfuly Edited!", "Success", 1);
+			a.layoutStudents();
 		} else if (e.getSource() == removebtn_student) {
-			return;
+			int dialogButton = JOptionPane.YES_NO_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Remove Student?","Warning",dialogButton);
+			if(dialogResult == JOptionPane.YES_OPTION){
+				DB.removeStudent(student);
+				a.layoutStudents();
+				File myObj = new File("./images/"+student.getId()+".jpg"); 
+			    if (myObj.delete()) { 
+			      System.out.println("Deleted the file: " + myObj.getName());
+			    } else {
+			      System.out.println("Failed to delete the file.");
+			    } 
+				this.dispose();
+			}
 		} else if (e.getSource() == addbtn) {
 			Subject selected = (Subject) subjectsCb.getSelectedItem();
 			DB.insertStudentSubject(student.getId(),selected.getId());
