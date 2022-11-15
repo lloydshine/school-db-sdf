@@ -104,12 +104,10 @@ public class AddStudent extends JFrame implements ActionListener {
 		g2.dispose();
 		Student newstudent = a.studentlist.get(a.studentlist.size()-1);
 		String img_src = newstudent.getId()+".jpg";
-		System.out.println(img_src);
 		File currentDir = new File("./images/"+img_src);
 		if(filename == null) {
 			filename = "./images/none.jpg";
 		}
-		System.out.println(filename);
 		File sourcefile = new File(filename);
 		Files.copy(sourcefile.toPath(), currentDir.toPath());
         
@@ -151,6 +149,12 @@ public class AddStudent extends JFrame implements ActionListener {
 			}
 			a.layoutStudents();
 			fullnamest.setText("");
+			
+			image = new ImageIcon("./images/none.jpg");
+			Image i = image.getImage(); // transform it 
+			Image newimg = i.getScaledInstance(150, 150,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+			image = new ImageIcon(newimg);  // transform it back
+			lbl_img.setIcon(image);
 		}
 	}
 }
