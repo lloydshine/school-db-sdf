@@ -26,7 +26,7 @@ public class App extends JFrame {
 	private StudentPanel studentpanel;
 	private Student clicked = null;
 	private JButton viewbtn;
-	private static ArrayList<Student> studentlist;
+	private ArrayList<Student> studentlist;
 	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;

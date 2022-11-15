@@ -49,6 +49,50 @@ public class DB {
 		} catch (SQLException e) {}
 	}
 	
+	public static ArrayList<Subject> getAvailableSubjects(Student student) {
+		ArrayList<Subject> list = new ArrayList<>();
+    	try {
+        	c = connect();
+        	String sql = "SELECT * FROM subjects "
+        			+ "WHERE subname NOT IN ("
+        			+ "  SELECT subname FROM student_subjects ssub"
+        			+ "  LEFT JOIN subjects sub ON ssub.subject_id = sub.id"
+        			+ "  WHERE student_id = ?"
+        			+ ")";
+        	PreparedStatement ps = c.prepareStatement(sql);
+        	ps.setInt(1, student.getId());
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        		list.add(new Subject(rs.getInt("id"),rs.getString("subname"),
+            	        rs.getString("offernum")));
+        	}
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return list;
+	}
+	
+	public static ArrayList<Subject> getStudentSubjects(Student student) {
+		ArrayList<Subject> list = new ArrayList<>();
+    	try {
+        	c = connect();
+        	String sql = "SELECT sub.id,sub.subname,sub.offernum "
+        			+ "FROM student_subjects ssub "
+        			+ "LEFT JOIN subjects sub ON ssub.subject_id = sub.id "
+        			+ "WHERE ssub.student_id = ?;";
+        	PreparedStatement ps = c.prepareStatement(sql);
+        	ps.setInt(1, student.getId());
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        		list.add(new Subject(rs.getInt("id"),rs.getString("subname"),
+            	        rs.getString("offernum")));
+        	}
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+    	return list;
+	}
+	
 	public static ArrayList<Student> getStudents() {
 		ArrayList<Student> list = new ArrayList<>();
     	try {
@@ -81,6 +125,18 @@ public class DB {
     	return list;
 	}
 	
+	public static void insertStudentSubject(int student_id, int subject_id) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("INSERT INTO student_subjects (student_id,subject_id) VALUES (?,?)");
+       		ps.setInt(1, student_id);
+       		ps.setInt(2, subject_id);
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	public static void insertStudent(String fname,String course,int yearlevel) {
 		try {
        		c = connect();
@@ -100,6 +156,18 @@ public class DB {
        		PreparedStatement ps = c.prepareStatement("INSERT INTO subjects (subname,offernum) VALUES (?,?)");
        		ps.setString(1, subname);
        		ps.setString(2, offernum);
+       		ps.executeUpdate();
+    	} catch (SQLException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public static void removeStudentSubject(Student student,Subject subject) {
+		try {
+       		c = connect();
+       		PreparedStatement ps = c.prepareStatement("DELETE FROM student_subjects WHERE student_id = ? AND subject_id = ?;");
+       		ps.setInt(1, student.getId());
+       		ps.setInt(2, subject.getId());
        		ps.executeUpdate();
     	} catch (SQLException e) {
             e.printStackTrace();
@@ -167,8 +235,8 @@ public class DB {
         	        rs.getString("course"),rs.getInt("yearlevel")));
         	}
     	} catch (SQLException e) {
+    		e.printStackTrace();
         }
-    	//System.out.println(list.size());
     	return list;
 	}
 }

@@ -17,7 +17,6 @@ public class Student {
 	private String fullname;
 	private int yearlevel;
 	private String course;
-	private ArrayList<Subject> subjects;
 	
 	public Student(int id,String fullname,String course,int yearlevel) {
 		this.image = new ImageIcon("./images/"+id+".jpg");
@@ -41,5 +40,9 @@ public class Student {
 	public void setCourse(String course) {this.course = course;}
 	public ImageIcon getImage() {return image;}
 	public void setImage(ImageIcon image) {this.image = image;}
+	public ArrayList<Subject> getSubjects() {
+		ArrayList<Subject> subjects = DB.getStudentSubjects(this);
+		return subjects;
+	}
 	
 }

@@ -26,7 +26,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 	private JTextField offernumTf;
 	private JTable table;
 	private JButton addbtn, removebtn, savebtn;
-	private static DefaultTableModel model = new DefaultTableModel();
+	private DefaultTableModel model = new DefaultTableModel();
 	Object[] columns = {"ID","Subject Name","Offer No."};
 	Object[] rowdata = new Object[3];
 	
