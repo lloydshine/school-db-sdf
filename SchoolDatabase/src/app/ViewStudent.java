@@ -164,6 +164,18 @@ public class ViewStudent extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 				return;
 			}
+			if(DB.searchDuplicateStudent(fnameTf.getText() + lnameTf.getText())) {
+				JOptionPane.showMessageDialog(this, "Student already exist!", "Error", 2);
+				fnameTf.setText(student.getFirstName());
+				lnameTf.setText(student.getLastName());
+				yearlevelCb.setSelectedIndex(student.getYearLevel()-1);
+				int c = 0;
+				if(student.getCourse().equals("BSCS")) {
+					c = 1;
+				}
+				courseCb.setSelectedIndex(c);
+				return;
+			}
 			student.setFirstname(fnameTf.getText());
 			student.setLastname(lnameTf.getText());
 			student.setCourse((String) courseCb.getSelectedItem());

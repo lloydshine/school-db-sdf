@@ -37,7 +37,7 @@ public class DB {
 			c = connect();
 			String[] tables = {
 				"CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,firstname varchar(30),lastname varchar(30),course varchar(20), yearlevel INTEGER);",
-				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20), offernum varchar(20));",
+				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20) UNIQUE, offernum varchar(20) UNIQUE);",
 				"CREATE TABLE student_subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,student_id integer,subject_id integer);"
 			};
 			Statement stat = c.createStatement();
@@ -151,7 +151,7 @@ public class DB {
         }
 	}
 	
-	public static void insertSubject(String subname,String offernum) {
+	public static boolean insertSubject(String subname,String offernum) {
 		try {
        		c = connect();
        		PreparedStatement ps = c.prepareStatement("INSERT INTO subjects (subname,offernum) VALUES (?,?)");
@@ -159,8 +159,9 @@ public class DB {
        		ps.setString(2, offernum);
        		ps.executeUpdate();
     	} catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         }
+		return true;
 	}
 	
 	public static void removeStudentSubject(Student student,Subject subject) {
@@ -197,7 +198,7 @@ public class DB {
         }
 	}
 	
-	public static void editSubject(Subject subject) {
+	public static boolean editSubject(Subject subject) {
 		try {
        		c = connect();
        		PreparedStatement ps = c.prepareStatement("UPDATE subjects SET subname = ?, offernum = ? WHERE id = ?");
@@ -206,8 +207,10 @@ public class DB {
        		ps.setInt(3, subject.getId());
        		ps.executeUpdate();
     	} catch (SQLException e) {
-            e.printStackTrace();
+    		
+            return false;
         }
+		return true;
 	}
 	
 	public static void editStudent(Student student) {
@@ -240,6 +243,21 @@ public class DB {
     		e.printStackTrace();
         }
     	return list;
+	}
+	
+	public static boolean searchDuplicateStudent(String name) {
+		try {
+        	c = connect();
+        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE firstname || lastname LIKE ?;");
+        	ps.setString(1, name);
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        	    return true;
+        	}
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+        }
+		return false;
 	}
 	
 	public static ArrayList<Student> searchStudent(String search) {

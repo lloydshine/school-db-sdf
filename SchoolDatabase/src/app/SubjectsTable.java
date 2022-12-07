@@ -131,7 +131,12 @@ public class SubjectsTable extends JFrame implements ActionListener{
 			if(subname.length() == 0 || offernum.length() == 0) {
 				JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 			} else {
-				DB.insertSubject(subname,offernum);
+				if(!DB.insertSubject(subname,offernum)) {
+					JOptionPane.showMessageDialog(this, "Duplicate Subject", "Error", 2);
+					subnameTf.setText("");
+					offernumTf.setText("");
+					return;
+				}
 				subjects = DB.getSubjects();
 				Subject newsub = subjects.get(subjects.size()-1);
 				Object[] rowdata = new Object[3];
@@ -166,9 +171,12 @@ public class SubjectsTable extends JFrame implements ActionListener{
 					sub.setSubject_name(subname);
 					sub.setOffernum(offernum);
 					addValues();
-					subnameTf.setText("");
-					offernumTf.setText("");
-					DB.editSubject(sub);
+					if(!DB.editSubject(sub)) {
+						JOptionPane.showMessageDialog(this, "Duplicate Subject", "Error", 2);
+						subnameTf.setText("");
+						offernumTf.setText("");
+						return;
+					}
 			   }
 		   }
 	   } else if(e.getSource() == vsbtn) {

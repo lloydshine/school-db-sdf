@@ -143,7 +143,7 @@ public class AddStudent extends JFrame implements ActionListener {
 			icon = new ImageIcon(newimage);
 			lbl_img.setIcon(icon);
 		}else if(e.getSource()==addstudent) {
-			if(fnameTf.getText().length()<4) {
+			if(fnameTf.getText().length()<4 || lnameTf.getText().length()<4) {
 				JOptionPane.showMessageDialog(this, "Invalid Name", "Error", 2);
 				return;
 			}
@@ -152,7 +152,13 @@ public class AddStudent extends JFrame implements ActionListener {
 			String course = coursest.getSelectedItem().toString();
 			String yrlevel = yrlvlst.getSelectedItem().toString();
 			int yearlevel = Integer.parseInt(yrlevel);
+			if(DB.searchDuplicateStudent(fname + lname)) {
+				JOptionPane.showMessageDialog(this, "Duplicate Student", "Error", 2);
+				return;
+			}
 			DB.insertStudent(fname,lname,course,yearlevel);
+			fnameTf.setText("");
+			lnameTf.setText("");
 			JOptionPane.showMessageDialog(this, "Student Added!", "SUCCESS",1);
 			a.layoutStudents();
 			try {
@@ -162,8 +168,6 @@ public class AddStudent extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 			a.layoutStudents();
-			fnameTf.setText("");
-			lnameTf.setText("");
 			
 			image = new ImageIcon("./images/none.jpg");
 			Image i = image.getImage(); // transform it 
