@@ -160,21 +160,25 @@ public class ViewStudent extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == savebtn) {
+			String fname = fnameTf.getText();
+			String lname = lnameTf.getText();
 			if(fnameTf.getText().length() < 5) {
 				JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 				return;
 			}
-			if(DB.searchDuplicateStudent(fnameTf.getText() + lnameTf.getText())) {
-				JOptionPane.showMessageDialog(this, "Student already exist!", "Error", 2);
-				fnameTf.setText(student.getFirstName());
-				lnameTf.setText(student.getLastName());
-				yearlevelCb.setSelectedIndex(student.getYearLevel()-1);
-				int c = 0;
-				if(student.getCourse().equals("BSCS")) {
-					c = 1;
+			if(!fname.equals(student.getFirstName()) || !lname.equals(student.getLastName())) {
+				if(DB.searchDuplicateStudent(fnameTf.getText() + lnameTf.getText())) {
+					JOptionPane.showMessageDialog(this, "Student already exist!", "Error", 2);
+					fnameTf.setText(student.getFirstName());
+					lnameTf.setText(student.getLastName());
+					yearlevelCb.setSelectedIndex(student.getYearLevel()-1);
+					int c = 0;
+					if(student.getCourse().equals("BSCS")) {
+						c = 1;
+					}
+					courseCb.setSelectedIndex(c);
+					return;
 				}
-				courseCb.setSelectedIndex(c);
-				return;
 			}
 			student.setFirstname(fnameTf.getText());
 			student.setLastname(lnameTf.getText());
