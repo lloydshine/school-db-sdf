@@ -25,13 +25,14 @@ public class AddStudent extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private ImageIcon image;
 	private JButton insertimg,addstudent;
-	private JTextField fullnamest;
+	private JTextField fnameTf;
 	private JLabel lbl_img;
 	@SuppressWarnings("rawtypes")
 	private JComboBox coursest,yrlvlst;
 	App a;
 	
 	String filename;
+	private JTextField lnameTf;
 
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -39,34 +40,36 @@ public class AddStudent extends JFrame implements ActionListener {
 		this.a = a;
 		setTitle("ADD STUDENT");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 387, 422);
+		setSize(387, 529);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Fullname: ");
+		JLabel lblNewLabel = new JLabel("Firstname");
 		lblNewLabel.setBounds(55, 203, 57, 14);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Course: ");
-		lblNewLabel_1.setBounds(55, 264, 57, 14);
+		lblNewLabel_1.setBounds(55, 323, 57, 14);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Year level: ");
-		lblNewLabel_2.setBounds(214, 264, 71, 14);
+		lblNewLabel_2.setBounds(214, 323, 71, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		String[] lvls = {"1","2","3","4"};
 		yrlvlst = new JComboBox(lvls);
 		yrlvlst.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		yrlvlst.setBounds(214, 279, 103, 32);
+		yrlvlst.setBounds(214, 338, 103, 32);
 		contentPane.add(yrlvlst);
 		
 		String[] ccs = {"BSIT","BSCS"};
 		coursest = new JComboBox(ccs);
 		coursest.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		coursest.setBounds(55, 279, 114, 33);
+		coursest.setBounds(55, 338, 114, 33);
 		contentPane.add(coursest);
 		
 		insertimg = new JButton("Insert image");
@@ -86,14 +89,24 @@ public class AddStudent extends JFrame implements ActionListener {
 		
 		addstudent = new JButton("Add Student");
 		addstudent.addActionListener(this);
-		addstudent.setBounds(111, 340, 143, 33);
+		addstudent.setBounds(111, 399, 143, 33);
 		contentPane.add(addstudent);
 		
-		fullnamest = new JTextField();
-		fullnamest.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		fullnamest.setBounds(55, 218, 262, 39);
-		contentPane.add(fullnamest);
-		fullnamest.setColumns(10);
+		fnameTf = new JTextField();
+		fnameTf.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		fnameTf.setBounds(55, 218, 262, 39);
+		contentPane.add(fnameTf);
+		fnameTf.setColumns(10);
+		
+		JLabel lblLastname = new JLabel("Lastname");
+		lblLastname.setBounds(55, 258, 57, 14);
+		contentPane.add(lblLastname);
+		
+		lnameTf = new JTextField();
+		lnameTf.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lnameTf.setColumns(10);
+		lnameTf.setBounds(55, 273, 262, 39);
+		contentPane.add(lnameTf);
 	}
 	
 	public void save() throws IOException{
@@ -130,15 +143,16 @@ public class AddStudent extends JFrame implements ActionListener {
 			icon = new ImageIcon(newimage);
 			lbl_img.setIcon(icon);
 		}else if(e.getSource()==addstudent) {
-			if(fullnamest.getText().length()<4) {
+			if(fnameTf.getText().length()<4) {
 				JOptionPane.showMessageDialog(this, "Invalid Name", "Error", 2);
 				return;
 			}
-			String fname = fullnamest.getText();
+			String fname = fnameTf.getText();
+			String lname = lnameTf.getText();
 			String course = coursest.getSelectedItem().toString();
 			String yrlevel = yrlvlst.getSelectedItem().toString();
 			int yearlevel = Integer.parseInt(yrlevel);
-			DB.insertStudent(fname, course, yearlevel);
+			DB.insertStudent(fname,lname,course,yearlevel);
 			JOptionPane.showMessageDialog(this, "Student Added!", "SUCCESS",1);
 			a.layoutStudents();
 			try {
@@ -148,7 +162,8 @@ public class AddStudent extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 			a.layoutStudents();
-			fullnamest.setText("");
+			fnameTf.setText("");
+			lnameTf.setText("");
 			
 			image = new ImageIcon("./images/none.jpg");
 			Image i = image.getImage(); // transform it 

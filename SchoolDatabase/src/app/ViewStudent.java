@@ -37,6 +37,7 @@ public class ViewStudent extends JFrame implements ActionListener {
 	@SuppressWarnings("rawtypes")
 	private JComboBox courseCb,yearlevelCb;
 	private int selected_sub = -1;
+	private JTextField lnameTf;
 	
 	void addSubjects() {
 		model.setRowCount(0);
@@ -78,7 +79,7 @@ public class ViewStudent extends JFrame implements ActionListener {
 		
 		fnameTf = new JTextField();
 		fnameTf.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		fnameTf.setText(student.getFullName());
+		fnameTf.setText(student.getFirstName());
 		fnameTf.setBounds(221, 53, 207, 40);
 		contentPane.add(fnameTf);
 		fnameTf.setColumns(10);
@@ -92,7 +93,7 @@ public class ViewStudent extends JFrame implements ActionListener {
 		}
 		courseCb.setSelectedIndex(c);
 		courseCb.setMaximumRowCount(2);
-		courseCb.setBounds(221, 104, 207, 30);
+		courseCb.setBounds(221, 149, 207, 30);
 		contentPane.add(courseCb);
 		
 		String[] lvls = {"1","2","3","4"};
@@ -100,32 +101,32 @@ public class ViewStudent extends JFrame implements ActionListener {
 		yearlevelCb.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		yearlevelCb.setSelectedIndex(student.getYearLevel()-1);
 		yearlevelCb.setMaximumRowCount(4);
-		yearlevelCb.setBounds(221, 148, 207, 30);
+		yearlevelCb.setBounds(221, 190, 207, 30);
 		contentPane.add(yearlevelCb);
 		
 		savebtn = new JButton("SAVE");
 		savebtn.addActionListener(this);
-		savebtn.setBounds(325, 189, 89, 23);
+		savebtn.setBounds(320, 225, 89, 23);
 		contentPane.add(savebtn);
 		
 		removebtn_student = new JButton("REMOVE");
 		removebtn_student.addActionListener(this);
-		removebtn_student.setBounds(221, 189, 89, 23);
+		removebtn_student.setBounds(221, 225, 89, 23);
 		contentPane.add(removebtn_student);
 		
 		subjectsCb = new JComboBox<>();
 		subjectsCb.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		subjectsCb.setBounds(32, 444, 168, 40);
+		subjectsCb.setBounds(38, 477, 168, 40);
 		addAvailableSubjects();
 		contentPane.add(subjectsCb);
 		
 		addbtn = new JButton("ADD");
-		addbtn.setBounds(210, 456, 89, 23);
+		addbtn.setBounds(211, 489, 89, 23);
 		addbtn.addActionListener(this);
 		contentPane.add(addbtn);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(33, 223, 362, 210);
+		scrollPane.setBounds(38, 259, 362, 210);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -144,9 +145,16 @@ public class ViewStudent extends JFrame implements ActionListener {
 		addSubjects();
 		
 		removebtn_subject = new JButton("REMOVE");
-		removebtn_subject.setBounds(309, 456, 89, 23);
+		removebtn_subject.setBounds(310, 489, 89, 23);
 		removebtn_subject.addActionListener(this);
 		contentPane.add(removebtn_subject);
+		
+		lnameTf = new JTextField();
+		lnameTf.setText(student.getLastName());
+		lnameTf.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lnameTf.setColumns(10);
+		lnameTf.setBounds(221, 98, 207, 40);
+		contentPane.add(lnameTf);
 	}
 
 	@Override
@@ -156,7 +164,8 @@ public class ViewStudent extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Missing Fields!", "Error", 2);
 				return;
 			}
-			student.setFullname(fnameTf.getText());
+			student.setFirstname(fnameTf.getText());
+			student.setLastname(lnameTf.getText());
 			student.setCourse((String) courseCb.getSelectedItem());
 			student.setYearLevel(Integer.parseInt((String) yearlevelCb.getSelectedItem()));
 			DB.editStudent(student);

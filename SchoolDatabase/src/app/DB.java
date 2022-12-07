@@ -36,7 +36,7 @@ public class DB {
 		try {
 			c = connect();
 			String[] tables = {
-				"CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,fullname varchar(30),course varchar(20), yearlevel INTEGER);",
+				"CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,firstname varchar(30),lastname varchar(30),course varchar(20), yearlevel INTEGER);",
 				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20), offernum varchar(20));",
 				"CREATE TABLE student_subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,student_id integer,subject_id integer);"
 			};
@@ -100,7 +100,7 @@ public class DB {
         	PreparedStatement ps = c.prepareStatement("SELECT * from students");
         	ResultSet rs = ps.executeQuery();
         	while(rs.next()) {
-        	    list.add(new Student(rs.getInt("id"),rs.getString("fullname"),
+        	    list.add(new Student(rs.getInt("id"),rs.getString("firstname"),rs.getString("lastname"),
         	        rs.getString("course"),rs.getInt("yearlevel")));
         	}
     	} catch (SQLException e) {
@@ -137,13 +137,14 @@ public class DB {
         }
 	}
 	
-	public static void insertStudent(String fname,String course,int yearlevel) {
+	public static void insertStudent(String fname,String lname,String course,int yearlevel) {
 		try {
        		c = connect();
-       		PreparedStatement ps = c.prepareStatement("INSERT INTO students (fullname,course,yearlevel) VALUES (?,?,?)");
+       		PreparedStatement ps = c.prepareStatement("INSERT INTO students (firstname,lastname,course,yearlevel) VALUES (?,?,?,?)");
        		ps.setString(1, fname);
-       		ps.setString(2, course);
-       		ps.setInt(3, yearlevel);
+       		ps.setString(2, lname);
+       		ps.setString(3, course);
+       		ps.setInt(4, yearlevel);
        		ps.executeUpdate();
     	} catch (SQLException e) {
             e.printStackTrace();
@@ -212,26 +213,44 @@ public class DB {
 	public static void editStudent(Student student) {
 		try {
        		c = connect();
-       		PreparedStatement ps = c.prepareStatement("UPDATE students SET fullname = ?,course = ?,yearlevel = ? WHERE id = ?");
-       		ps.setString(1, student.getFullName());
-       		ps.setString(2, student.getCourse());
-       		ps.setInt(3, student.getYearLevel());
-       		ps.setInt(4, student.getId());
+       		PreparedStatement ps = c.prepareStatement("UPDATE students SET firstname = ?,lastname = ?,course = ?,yearlevel = ? WHERE id = ?");
+       		ps.setString(1, student.getFirstName());
+       		ps.setString(2, student.getLastName());
+       		ps.setString(3, student.getCourse());
+       		ps.setInt(4, student.getYearLevel());
+       		ps.setInt(5, student.getId());
        		ps.executeUpdate();
     	} catch (SQLException e) {
             e.printStackTrace();
         }
 	}
 	
+	public static ArrayList<Student> getSubjectStudents(Subject subject) {
+		ArrayList<Student> list = new ArrayList<>();
+		try {
+        	c = connect();
+        	PreparedStatement ps = c.prepareStatement("SELECT students.id,firstname,lastname,course,yearlevel FROM student_subjects ss Left JOIN students ON students.id = ss.student_id WHERE subject_id = ?;");
+        	ps.setInt(1, subject.getId());
+        	ResultSet rs = ps.executeQuery();
+        	while(rs.next()) {
+        	    list.add(new Student(rs.getInt("id"),rs.getString("firstname"),rs.getString("lastname"),
+        	        rs.getString("course"),rs.getInt("yearlevel")));
+        	}
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+        }
+    	return list;
+	}
+	
 	public static ArrayList<Student> searchStudent(String search) {
 		ArrayList<Student> list = new ArrayList<>();
     	try {
         	c = connect();
-        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE fullname LIKE ?;");
+        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE firstname || lastname || course LIKE ?;");
         	ps.setString(1, search);
         	ResultSet rs = ps.executeQuery();
         	while(rs.next()) {
-        	    list.add(new Student(rs.getInt("id"),rs.getString("fullname"),
+        	    list.add(new Student(rs.getInt("id"),rs.getString("firstname"),rs.getString("lastname"),
         	        rs.getString("course"),rs.getInt("yearlevel")));
         	}
     	} catch (SQLException e) {

@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 
@@ -25,7 +24,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 	private JTextField subnameTf;
 	private JTextField offernumTf;
 	private JTable table;
-	private JButton addbtn, removebtn, savebtn;
+	private JButton addbtn, removebtn, savebtn, vsbtn;
 	private DefaultTableModel model = new DefaultTableModel();
 	Object[] columns = {"ID","Subject Name","Offer No."};
 	Object[] rowdata = new Object[3];
@@ -58,6 +57,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 				Subject sub = subjects.get(selected);
 				subnameTf.setText(sub.getSubname());
 				offernumTf.setText(sub.getOffernum());
+				vsbtn.setEnabled(true);
 			}
 		});
 		scrollPane.setViewportView(table);
@@ -100,6 +100,12 @@ public class SubjectsTable extends JFrame implements ActionListener{
 		removebtn.setBounds(229, 456, 89, 23);
 		contentPane.add(removebtn);
 		removebtn.addActionListener(this);
+		
+		vsbtn = new JButton("View Students");
+		vsbtn.setEnabled(false);
+		vsbtn.setBounds(101, 410, 141, 23);
+		contentPane.add(vsbtn);
+		vsbtn.addActionListener(this);
 	}
 	
 	void addValues() {
@@ -147,6 +153,7 @@ public class SubjectsTable extends JFrame implements ActionListener{
 			subnameTf.setText("");
 			offernumTf.setText("");
 			DB.removeSubject(sub);
+			vsbtn.setEnabled(false);
 	   } else if (e.getSource() == savebtn) {
 		   if(selected == -1) {
 				JOptionPane.showMessageDialog(this, "Select an Item!", "Error", 2);
@@ -164,6 +171,9 @@ public class SubjectsTable extends JFrame implements ActionListener{
 					DB.editSubject(sub);
 			   }
 		   }
+	   } else if(e.getSource() == vsbtn) {
+		   SubjectStudents ss = new SubjectStudents(subjects.get(selected));
+		   ss.setVisible(true);
 	   }
 	}
 }
