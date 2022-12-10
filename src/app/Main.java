@@ -5,5 +5,6 @@ public class Main {
 		DB.createTables();
 		App.main(args);
 		System.out.println("Running");
+		System.out.println("Dagan");
 	}
 }
