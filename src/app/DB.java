@@ -46,7 +46,7 @@ public class DB {
 			}
 			stat.close();
 			c.close();
-		} catch (SQLException e) {}
+		} catch (SQLException e) { e.printStackTrace(); }
 	}
 	
 	public static ArrayList<Subject> getAvailableSubjects(Student student) {
