@@ -138,7 +138,8 @@ public class App extends JFrame implements ActionListener{
 		int row = 0, column = 0;
 	    for (Student student : studentlist) {
 	    	if(column == 2) {
-	    		column = 0; row++;
+	    		column = 0;
+	    		row++;
 	    	}
 	       StudentPane itempane = new StudentPane(student);
 	       GridBagConstraints gbc = new GridBagConstraints();
