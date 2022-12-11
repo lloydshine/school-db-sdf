@@ -46,7 +46,7 @@ public class DB {
 			}
 			stat.close();
 			c.close();
-		} catch (SQLException e) { e.printStackTrace(); }
+		} catch (SQLException e) { System.out.println("Database Already Exists!"); }
 	}
 	
 	public static ArrayList<Subject> getAvailableSubjects(Student student) {
