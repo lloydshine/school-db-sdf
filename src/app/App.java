@@ -137,6 +137,7 @@ public class App extends JFrame implements ActionListener{
 	    	   }
 	       });
 	       gbc.gridx = column++;
+	       //coords
 	       gbc.gridy = row;
 	       studentpanel.add(itempane,gbc);
 	    }

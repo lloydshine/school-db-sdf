@@ -128,7 +128,6 @@ public class AddStudent extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if(e.getSource()==insertimg) {
 			JFileChooser chooser = new JFileChooser();
 			chooser.showOpenDialog(null);
@@ -163,7 +162,6 @@ public class AddStudent extends JFrame implements ActionListener {
 			try {
 				save();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			a.layoutStudents();
