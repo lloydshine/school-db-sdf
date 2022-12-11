@@ -30,21 +30,9 @@ public class App extends JFrame implements ActionListener{
 	private JLabel image, name;
 	private JScrollPane scrollPane;
 	private JTextField textField;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					App frame = new App();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	public App() {
+		setTitle("DbSystem - Logged in as Admin");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(798, 616);
 		setLocationRelativeTo(null);
@@ -92,11 +80,7 @@ public class App extends JFrame implements ActionListener{
 		contentPane.add(name);
 		
 		searchbtn = new JButton("SEARCH");
-		searchbtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layoutStudents();
-			}
-		});
+		searchbtn.addActionListener(this);
 		searchbtn.setBounds(619, 31, 102, 37);
 		contentPane.add(searchbtn);
 		
@@ -132,7 +116,7 @@ public class App extends JFrame implements ActionListener{
 		
 	}
 	
-	void layoutStudents() {
+	boolean layoutStudents() {
 		studentlist = DB.searchStudent("%"+textField.getText()+"%");
 		studentpanel.removeAll();
 		int row = 0, column = 0;
@@ -159,8 +143,9 @@ public class App extends JFrame implements ActionListener{
 	    studentpanel.revalidate();
 	    studentpanel.repaint();
 	    if(studentlist.size() == 0) {
-			JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
+	    	return false;
 		}
+	    return true;
 	  }
 
 	@Override
@@ -175,6 +160,10 @@ public class App extends JFrame implements ActionListener{
 			image.setIcon(null);
 			image.setText("No Student Selected");
 			name.setText("");
+		} else if(e.getSource() == searchbtn) {
+			if(!layoutStudents() ) {
+				JOptionPane.showMessageDialog(this, "No Student Found!", "Error", 2);
+			}
 		}
 	}
 }
