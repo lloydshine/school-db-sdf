@@ -46,7 +46,11 @@ public class DB {
 			}
 			stat.close();
 			c.close();
+<<<<<<< HEAD
 		} catch (SQLException e) {  e.printStackTrace(); }
+=======
+		} catch (SQLException e) { e.printStackTrace(); }
+>>>>>>> e276fcf1b9bf3812424a4b9c48c6adfbf54a24d4
 	}
 	
 	public static ArrayList<Subject> getAvailableSubjects(Student student) {
