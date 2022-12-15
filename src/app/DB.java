@@ -245,11 +245,11 @@ public class DB {
     	return list;
 	}
 	
-	public static boolean searchDuplicateStudent(String name) {
+	public static boolean searchDuplicateStudent(String info) {
 		try {
         	c = connect();
-        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE firstname || lastname LIKE ?;");
-        	ps.setString(1, name);
+        	PreparedStatement ps = c.prepareStatement("SELECT * FROM students WHERE firstname || lastname || course || yearlevel LIKE ?;");
+        	ps.setString(1, info);
         	ResultSet rs = ps.executeQuery();
         	while(rs.next()) {
         	    return true;

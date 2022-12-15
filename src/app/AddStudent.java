@@ -150,7 +150,7 @@ public class AddStudent extends JFrame implements ActionListener {
 			String course = coursest.getSelectedItem().toString();
 			String yrlevel = yrlvlst.getSelectedItem().toString();
 			int yearlevel = Integer.parseInt(yrlevel);
-			if(DB.searchDuplicateStudent(fname + lname)) {
+			if(DB.searchDuplicateStudent(fname + lname + course + yrlevel)) {
 				JOptionPane.showMessageDialog(this, "Duplicate Student", "Error", 2);
 				return;
 			}
