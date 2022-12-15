@@ -38,7 +38,7 @@ public class DB {
 			String[] tables = {
 				"CREATE TABLE students(id INTEGER PRIMARY KEY AUTOINCREMENT,firstname varchar(30),lastname varchar(30),course varchar(20), yearlevel INTEGER);",
 				"CREATE TABLE subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,subname varchar(20) UNIQUE, offernum varchar(20) UNIQUE);",
-				"CREATE TABLE student_subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,student_id integer,subject_id integer);"
+				"CREATE TABLE student_subjects(id INTEGER PRIMARY KEY AUTOINCREMENT,student_id integer,subject_id integer,FOREIGN KEY (student_id) REFERENCES students (id),FOREIGN KEY (subject_id) REFERENCES subjects (id));"
 			};
 			Statement stat = c.createStatement();
 			for(String q : tables) {
